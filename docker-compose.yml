@@ -1,0 +1,52 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-reforma}
+      POSTGRES_USER: ${POSTGRES_USER:-reforma}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-reforma-local-pass}
+      TZ: Europe/Madrid
+    volumes:
+      - reforma-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-reforma} -d ${POSTGRES_DB:-reforma}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Reforma.Api/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Development}
+      CONNECTION_STRINGS__DEFAULT: Host=postgres;Port=5432;Database=${POSTGRES_DB:-reforma};Username=${POSTGRES_USER:-reforma};Password=${POSTGRES_PASSWORD:-reforma-local-pass}
+      COMOPS_ADMIN_EMAIL: ${COMOPS_ADMIN_EMAIL:-admin@example.local}
+      COMOPS_ADMIN_PASSWORD: ${COMOPS_ADMIN_PASSWORD:-change-this-password-before-use}
+      REFORMA_ADMIN_EMAIL: ${REFORMA_ADMIN_EMAIL:-admin@example.local}
+      REFORMA_ADMIN_PASSWORD: ${REFORMA_ADMIN_PASSWORD:-change-this-password-before-use}
+      DOCUMENT_ROOT: /data/documents
+      MAX_UPLOAD_BYTES: ${MAX_UPLOAD_BYTES:-26214400}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:8094}
+      TZ: Europe/Madrid
+    volumes:
+      - reforma-documents:/data/documents
+      - reforma-keys:/root/.aspnet/DataProtection-Keys
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    ports:
+      - "${APP_PORT:-8094}:80"
+    depends_on:
+      backend:
+        condition: service_started
+
+volumes:
+  reforma-postgres:
+  reforma-documents:
+  reforma-keys:
