@@ -887,8 +887,8 @@ function GlobalSearch({
 }
 
 function Login({ onLogin }: { onLogin: (user: User) => void }) {
-  const [email, setEmail] = useState("admin@example.local");
-  const [password, setPassword] = useState("change-this-password-before-use");
+  const [email, setEmail] = useState("admin@local.test");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();

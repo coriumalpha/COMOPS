@@ -1864,7 +1864,7 @@ public static class SeedData
     {
         if (!await db.Users.AnyAsync())
         {
-            var email = (Environment.GetEnvironmentVariable("COMOPS_ADMIN_EMAIL") ?? Environment.GetEnvironmentVariable("REFORMA_ADMIN_EMAIL") ?? "admin@example.local").ToLower();
+            var email = (Environment.GetEnvironmentVariable("COMOPS_ADMIN_EMAIL") ?? Environment.GetEnvironmentVariable("REFORMA_ADMIN_EMAIL") ?? "admin@local.test").ToLower();
             var password = Environment.GetEnvironmentVariable("COMOPS_ADMIN_PASSWORD") ?? Environment.GetEnvironmentVariable("REFORMA_ADMIN_PASSWORD") ?? "change-this-password-before-use";
             db.Users.Add(new UserAccount { Email = email, DisplayName = "Administrador local", PasswordHash = PasswordHasher.Hash(password) });
             await db.SaveChangesAsync();

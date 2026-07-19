@@ -23,13 +23,13 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Development}
       CONNECTION_STRINGS__DEFAULT: Host=postgres;Port=5432;Database=${POSTGRES_DB:-reforma};Username=${POSTGRES_USER:-reforma};Password=${POSTGRES_PASSWORD:-reforma-local-pass}
-      COMOPS_ADMIN_EMAIL: ${COMOPS_ADMIN_EMAIL:-admin@example.local}
+      COMOPS_ADMIN_EMAIL: ${COMOPS_ADMIN_EMAIL:-admin@local.test}
       COMOPS_ADMIN_PASSWORD: ${COMOPS_ADMIN_PASSWORD:-change-this-password-before-use}
-      REFORMA_ADMIN_EMAIL: ${REFORMA_ADMIN_EMAIL:-admin@example.local}
+      REFORMA_ADMIN_EMAIL: ${REFORMA_ADMIN_EMAIL:-admin@local.test}
       REFORMA_ADMIN_PASSWORD: ${REFORMA_ADMIN_PASSWORD:-change-this-password-before-use}
       DOCUMENT_ROOT: /data/documents
       MAX_UPLOAD_BYTES: ${MAX_UPLOAD_BYTES:-26214400}
-      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:8094}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:8094,https://reforma.urdugrid.com}
       TZ: Europe/Madrid
     volumes:
       - reforma-documents:/data/documents
