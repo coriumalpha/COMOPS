@@ -1,6 +1,7 @@
 services:
   postgres:
     image: postgres:16-alpine
+    restart: unless-stopped
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-reforma}
       POSTGRES_USER: ${POSTGRES_USER:-reforma}
@@ -15,6 +16,7 @@ services:
       retries: 10
 
   backend:
+    restart: unless-stopped
     build:
       context: .
       dockerfile: backend/Reforma.Api/Dockerfile
@@ -37,6 +39,7 @@ services:
         condition: service_healthy
 
   frontend:
+    restart: unless-stopped
     build:
       context: .
       dockerfile: frontend/Dockerfile
